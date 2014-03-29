@@ -1,0 +1,103 @@
+<html>
+<head>
+    <title>OpenWorld</title>
+    {% load staticfiles %}
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+    <link href="{% static "openworld/style.css" %}" rel="stylesheet" type="text/css" />
+
+    <link href="http://aehlke.github.io/tag-it/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <link href="http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://aehlke.github.io/tag-it/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "openworld/taxonomy.js" %}" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+    <div id="container">
+        <div id="title">
+            <p><h1>OpenWorld</h1></p>
+        </div>
+        <div style="text-align: center;">
+        <form id="searchForm" method="GET" action="{% url 'openworld:search' %}">
+            {% csrf_token %}
+            <input id="situationskeywords" type="text" name="situationsquery" autocomplete="off" />
+            <input id="serviceskeywords" type="text" name="servicesquery" autocomplete="off" />
+            <input type="submit" value="Search" />
+        </form>
+
+        <p>
+            <a href="{% url 'openworld:dashboard' %}">Login/Dashboard</a> | 
+            <a href="{% url 'openworld:register' %}">Register</a>
+        </p>
+
+        {% if taxonomy %}
+        <div style="display: inline-block; ;margin: 0 auto;">
+        <div style="float:left; width:200px;">
+            <ul id="scroll-situations" style="list-style-type: none;">
+                <li><b class="scrolltitle">Situations</b></li>
+            </ul>
+            <ul id="situations" style="list-style-type: none;">
+                {% for situation in taxonomy.situations %}
+                <li>{{ situation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div style="float:left; width:200px;">
+            <ul id="scroll-services" style="list-style-type: none;">
+                <li><b class="scrolltitle">Services</b></li>
+            </ul> 
+            <ul id="services" style="list-style-type: none;">
+                {% for service in taxonomy.services %}
+                <li>{{ service }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <script>
+        $(document).ready(function(){
+            $("#situations").hide();
+            $("#services").hide();    
+        });
+        $("#scroll-situations").click(function () {
+            $("#situations").slideToggle("slow");
+        }); 
+        $("#scroll-services").click(function () {
+            $("#services").slideToggle("slow");
+        });         
+        $("#situationskeywords").tagit({
+            availableTags: situations,
+            beforeTagAdded: function(event, ui) {
+                if($.inArray(ui.tagLabel, situations) == -1) { return false; }
+            },
+            tagSource: situations,
+            removeConfirmation: true,
+            placeholderText: "I am...",
+            allowDuplicates: false,
+            allowSpaces: true,    
+        });
+        $("#serviceskeywords").tagit({
+            availableTags: services,
+            beforeTagAdded: function(event, ui) {
+                if($.inArray(ui.tagLabel, services) == -1) { return false; }
+            },
+            tagSource: services,
+            removeConfirmation: true,
+            placeholderText: "I want...",
+            allowDuplicates: false,
+            allowSpaces: true,    
+        });
+        </script>
+        <style>
+        ul
+        {
+            margin-left: 0px;
+            padding-left: 0px;
+        }
+        </style>
+
+        </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<p><i><b>Warning: </b>Privileged users will overwrite all tags.</i></p>
+{% if entry_tags %}
+<p><b>Current tags:</b> {{ entry_tags }}</p>
+{% endif %}
+<form action="{% url 'openworld:submittags' %}" id="searchForm" method="POST">
+    <input type="text" id="situationstags" name="situationstags" autocomplete="off" />
+    <input type="text" id="servicestags" name="servicestags" autocomplete="off" />
+    <input type="submit" value="Submit" />
+</form>
+
+{% if postrequest %}
+<span id="submittedsituations" style="display: none;">{{ postrequest.situationstags }}</span>
+<span id="submittedservices" style="display: none;">{{ postrequest.servicestags }}</span>
+<span id="submittedid" style="display: none;">{{ postrequest.id }}</span>
+{% endif %}
+
+<div id="result"></div>
+
+{% if taxonomy %}
+<div style="float:left; width:200px;">
+    <ul id="scroll-situations" style="list-style-type: none;">
+        <li><b class="scrolltitle">Situations</b></li>
+    </ul>
+    <ul id="situations" style="list-style-type: none;">
+        {% for situation in taxonomy.situations %}
+        <li>{{ situation }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div style="float:left; width:200px;">
+    <ul id="scroll-services" style="list-style-type: none;">
+        <li><b class="scrolltitle">Services</b></li>
+    </ul> 
+    <ul id="services" style="list-style-type: none;">
+        {% for service in taxonomy.services %}
+        <li>{{ service }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<script>
+$(document).ready(function(){
+    $("#situations").hide();
+    $("#services").hide();    
+});
+$("#scroll-situations").click(function () {
+    $("#situations").slideToggle("slow");
+}); 
+$("#scroll-services").click(function () {
+    $("#services").slideToggle("slow");
+}); 
+$("#situationstags").tagit({
+    availableTags: situations,
+    beforeTagAdded: function(event, ui) {
+        if($.inArray(ui.tagLabel, situations) == -1) { return false; }
+    },
+    tagSource: situations,
+    caseSensitive: false,
+    removeConfirmation: true,
+    placeholderText: "I am...",
+    allowDuplicates: false,
+    allowSpaces: true,    
+    caseSensitive: false
+});
+$("#servicestags").tagit({
+    availableTags: services,
+    beforeTagAdded: function(event, ui) {
+        if($.inArray(ui.tagLabel, services) == -1) { return false; }
+    },
+    tagSource: services,
+    caseSensitive: false,
+    removeConfirmation: true,
+    placeholderText: "I want...",
+    allowDuplicates: false,
+    allowSpaces: true,    
+    caseSensitive: false
+});
+$( "#searchForm" ).submit(function( event ) {
+    event.preventDefault();
+    var situationstags = $( this ).find( "input[name='situationstags']" ).val();
+    var servicestags = $( this ).find( "input[name='servicestags']" ).val();
+    $.ajax({
+        type: this.method,
+        url: this.action,
+        data: {
+            id: {{ entry_id }},
+            situationstags: situationstags,
+            servicestags: servicestags,
+            csrfmiddlewaretoken: '{{ csrf_token }}', 
+        },
+        success: function(data) {
+            var submittedservices = $(data).filter('#submittedservices').get(0);
+            submittedservices = $( submittedservices ).html();
+            var submittedsituations = $(data).filter('#submittedsituations').get(0);
+            submittedsituations = $( submittedsituations ).html();
+            var submittedid = $(data).filter('#submittedid').get(0);
+            submittedid = $( submittedid ).html();
+            $('#result').html('Successfully submitted <b>situations: [' + submittedsituations + 
+                ']</b> and <b>services: [' + submittedservices + ']</b> for entry <b>' + submittedid + '</b>.');
+        }
+    });
+});
+</script>
+
+<style>
+#searchForm
+{
+    width: 500px;
+}
+</style>

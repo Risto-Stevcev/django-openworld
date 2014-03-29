@@ -1,0 +1,22 @@
+<ul class="profile">
+    <li><b>Id:</b> {{ entry.id }}</li>
+    <li><b>Name:</b> {{ entry.name }}</li>
+    <li><b>Author:</b> {{ entry.user.username }}</li>
+    <li><b>Source:</b> {{ entry.source.name }}</li>
+    <li><b>Description:</b> {{ entry.description }}</li>
+    <li><b>City:</b> {{ entry.city }}</li>
+    <li><b>State:</b> {{ entry.state }}</li>
+    <li><b>Country:</b> {{ entry.country }}</li>
+    <li><b>Tags:</b> {{ entry.tags }} <a href="javascript:void(0);" onclick="loadEntry( '{% url 'openworld:tagsform' entry_id=entry.id %}' )">(Add/Modify Tags)</a></li>
+    <li><b>Created Date:</b> {{ entry.created_date }}</li>
+    <li><b>Modified Date:</b> {{ entry.modified_date }}</li>
+</ul>
+<br/>
+<b>Additional Fields:</b>
+<ul class="profile">
+    {% if extra_entry.url %}<li><b>Url:</b> <a href="{{ extra_entry.url }}">{{ extra_entry.url }}</a></li>{% endif %}
+    {% if extra_entry.agency %}<li><b>Agency:</b> {{ extra_entry.agency }}</li>{% endif %}
+    {% if extra_entry.agency_url %}<li><b>Agency Url:</b> <a href="{{ extra_entry.agency_url }}">{{ extra_entry.agency_url }}</a></li>{% endif %}
+    {% if extra_entry.phone %}<li><b>Phone:</b> {{ extra_entry.phone }}</li>{% endif %}
+    {% if extra_entry.icarol_id %}<li><b>iCarol Id:</b> {{ extra_entry.icarol_id }}</li>{% endif %}
+</ul>

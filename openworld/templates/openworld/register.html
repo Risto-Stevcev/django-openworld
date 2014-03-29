@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>OpenWorld: Register</title>
+    {% load staticfiles %}
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+    <link href="{% static "openworld/style.css" %}" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="container">
+    <div id="title">
+        <p><h1>Register with OpenWorld</h1></p>
+    </div>
+    {% if registered %}
+    <p><strong>Thank you for registering!</strong></p>
+    <p><a href="{% url 'openworld:index' %}">Return</a> or <a href="{% url 'openworld:login' %}">Login</a></p>
+    {% else %}
+    <form id="user_form" method="post" action="{% url 'openworld:register' %}"
+            enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <input type="submit" name="submit" value="Register" />
+    </form>
+    {% endif %}
+</div>
+</body>
+</html>

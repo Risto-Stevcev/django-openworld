@@ -1,0 +1,38 @@
+<div class="pagination">
+    <div id="ajax_table_result">
+    <table>
+        <tr class="title">
+            <td class="latest">Id</td>
+            <td class="latest">User</td>
+            <td class="latest">Name</td>
+            <td class="latest">Tags</td>
+        <tr>
+        {% for entry in entries %}
+        <tr>
+            <td class="latest"><a href="javascript:void(0);" onclick="loadEntry( '{% url 'openworld:viewentry' entry_id=entry.id %}' )">{{ entry.id }}</a></td>
+            <td class="latest">{{ entry.user }}</td>
+            <td class="latest">{{ entry.name }}</td>
+            <td class="latest">{{ entry.tags }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <hr width="300px">
+    <span class="step-links">
+        {% if entries.has_previous %}
+            <a id="prev" href="?page={{ entries.previous_page_number }}">previous</a>
+        {% else %}
+            <span>previous</span>
+        {% endif %}
+
+        <span class="current">
+             | {{ entries.number }} of {{ entries.paginator.num_pages }} | 
+        </span>
+
+        {% if entries.has_next %}
+            <a id="next" href="{{ request.path }}?page={{ entries.next_page_number }}">next</a>
+        {% else %}
+            <span>next</span>
+        {% endif %}
+    </span>
+</div>

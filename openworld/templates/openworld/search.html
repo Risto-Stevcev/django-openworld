@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>OpenWorld</title>
+    {% load staticfiles %}
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+    <link href="{% static "openworld/style.css" %}" rel="stylesheet" type="text/css" />
+
+    <link href="http://aehlke.github.io/tag-it/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <link href="http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://aehlke.github.io/tag-it/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "openworld/taxonomy.js" %}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="title">
+            <p><h1>OpenWorld</h1></p>
+        </div>
+        <div style="text-align: center;">
+        <form id="searchForm" method="GET" action="{% url 'openworld:search' %}">
+            {% csrf_token %}
+            <input id="situationskeywords" type="text" name="situationsquery" autocomplete="off" />
+            <input id="serviceskeywords" type="text" name="servicesquery" autocomplete="off" />
+            <input type="submit" value="Search" />
+        </form>
+
+        <script>
+        $("#situationskeywords").tagit({
+            availableTags: situations,
+            beforeTagAdded: function(event, ui) {
+                if($.inArray(ui.tagLabel, situations) == -1) { return false; }
+            },
+            tagSource: situations,
+            removeConfirmation: true,
+            placeholderText: "I am...",
+            allowDuplicates: false,
+            allowSpaces: true,    
+        });
+        $("#serviceskeywords").tagit({
+            availableTags: services,
+            beforeTagAdded: function(event, ui) {
+                if($.inArray(ui.tagLabel, services) == -1) { return false; }
+            },
+            tagSource: services,
+            removeConfirmation: true,
+            placeholderText: "I want...",
+            allowDuplicates: false,
+            allowSpaces: true,    
+        });
+        </script>
+
+        <p>
+            <a href="{% url 'openworld:dashboard' %}">Login/Dashboard</a> | 
+            <a href="{% url 'openworld:register' %}">Register</a>
+        </p>
+
+        <table>
+        {% for result in results %}
+            <tr>
+                <td><a href="{% url 'openworld:viewentry' entry_id=result.id %}">{{ result.name }}</a></td>
+                <td>{{ result.description }}</td><td></td>
+                <td>{{ result.tags }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if results.has_previous %}
+                    <a href="?page={{ results.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ results.number }} of {{ results.paginator.num_pages }}.
+                </span>
+
+                {% if results.has_next %}
+                    <a href="?page={{ results.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

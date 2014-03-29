@@ -1,0 +1,44 @@
+{% if entries %}
+<div class="pagination">
+    <div id="ajax_table_result">
+    <table>
+        <tr class="title">
+            <td class="latest">Id</td>
+            <td class="latest">Source</td>
+            <td class="latest">Url</td>
+            <td class="latest">Data</td>
+        <tr>
+        {% for entry in entries %}
+        <tr>
+            <td class="latest">{{ entry.id }}</td>
+            <td class="latest">{{ entry.source }}</td>
+            <td class="latest">{{ entry.url }}</td>
+            <td class="latest">{{ entry.data }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <hr width="300px">
+    <span class="step-links">
+        {% if entries.has_previous %}
+            <a id="prev" href="?page={{ entries.previous_page_number }}">previous</a>
+        {% else %}
+            <span>previous</span>
+        {% endif %}
+
+        <span class="current">
+             | {{ entries.number }} of {{ entries.paginator.num_pages }} | 
+        </span>
+
+
+        {% if entries.has_next %}
+        <a id="next" href="?page={{ entries.next_page_number }}">next</a>
+
+        {% else %}
+            <span>next</span>
+        {% endif %}
+    </span>
+</div>
+{% else %}
+<p>You currently have no requests.</p>
+{% endif %}

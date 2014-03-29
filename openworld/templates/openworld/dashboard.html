@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>OpenWorld Dashboard: {{ user.username }}</title>
+    {% load staticfiles %}
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+    <link href="{% static "openworld/style.css" %}" rel="stylesheet" type="text/css" />
+
+    <link href="http://aehlke.github.io/tag-it/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+    <link href="http://aehlke.github.io/tag-it/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://aehlke.github.io/tag-it/js/tag-it.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static "openworld/taxonomy.js" %}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{% static "openworld/dashboard.js" %}" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <div id="container">
+
+    <div id="title">
+        <p><h1>OpenWorld Dashboard</h1></p>
+    </div>
+    <p style="margin:0px; text-align: center;">
+        <a class="link" id="entries" href="{% url 'openworld:viewentries' %}">main</a> | 
+        <a href="{% url 'openworld:index' %}">search</a> | 
+        <a class="link" href="{% url 'openworld:info' %}"> profile info</a> | 
+        <a class="link" href="{% url 'openworld:taggedentries' %}">your tagged entries</a> | 
+        <a class="link" href="{% url 'openworld:viewrequests' %}">your submission requests</a> |
+        <a class="link" href="{% url 'openworld:submitrequest' %}">submit a request</a> | 
+        <a href="{% url 'openworld:logout' %}">logout</a>
+    </p>
+
+    {% if messages %}
+    <style>
+        ul.messages {
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+            color: white;
+        }
+        li.success {
+            background-color: olivedrab;
+        }
+        li.error {
+            background-color: red;
+        }
+    </style>
+
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    <script>$("ul.messages").fadeOut(5000);</script>
+    {% endif %}
+
+    </br>
+    <div id="content"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+body 
+{
+
+    font-family: 'Vollkorn';
+    font-size: 15px;
+}
+
+#container
+{
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pagination table {
+    font-size: 15px;
+    width: 100%;
+}
+
+form {
+    font-size: 15px;
+}
+
+#info
+{
+    text-align: left;
+}
+
+#title
+{
+    text-align: center;
+    color: teal;
+}
+
+tr.title
+{
+    font-weight: bold;
+}
+
+td.latest
+{
+    padding: 0px 10px;
+}
+
+div
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.pagination
+{
+    text-align: center;
+}
+
+a
+{
+    text-decoration: none;
+    color: purple;
+    font-weight: bold;
+}
+
+a:hover
+{
+    color: crimson;
+}
+
+ul.profile
+{
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.scrolltitle:hover
+{
+    color: teal;
+    cursor: pointer;
+}
+
+#searchForm
+{
+    display: inline-block;
+    width: 500px;
+}

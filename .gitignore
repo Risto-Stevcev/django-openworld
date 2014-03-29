@@ -1,0 +1,9 @@
+*.*~
+*.swp
+*.swn
+*.swo
+*.pyc
+*.pyo
+*.sqlite*
+/openworld/migrations/*
+/backup/*

@@ -1,0 +1,26 @@
+{% if jsonerror %}
+<p style="color: red;">{{ jsonerror }}</p>
+{% endif %}
+
+{% if form.errors %}
+    <p style="color: red;">
+        Form has errors. Correct the error{{ form.errors|pluralize }} below.
+    </p>
+    {{ form.errors }}</br>
+    {{ form.non_field_errors }}
+{% endif %}
+
+{% if new_request %}
+<b>new</b>
+<form id="submitrequest" action="{% url 'openworld:submitnewrequest' %}" method="post" enctype="multipart/form-data">
+{% else %}
+<form id="submitrequest" action="{% url 'openworld:submitrequest' %}" method="post" enctype="multipart/form-data">
+{% endif %}
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" value="Submit"/>
+</form>
+
+{% if not new_request %}
+<p><a href="javascript:void(0);" onclick="loadEntry( '{% url 'openworld:submitnewrequest' %}' )">Submit a new source</a></p>
+{% endif %}
